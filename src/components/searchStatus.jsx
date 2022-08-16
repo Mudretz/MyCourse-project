@@ -1,24 +1,24 @@
 import React from "react";
 
-const SearchStatus = (props) => {
+const SearchStatus = ( {length} ) => {
     const renderPhrase = (number) => {
-        if (number.length > 0) {
+        if (number > 0) {
         let word = ``;
-        number.length >= 2 && number.length <= 4 ? word = 'человека' : word = 'человек'
-        let phrase = `${number.length} ${word} тусанет с тобой сегодня`;
-        return phrase } else if (number.length === 0) {
+        number >= 2 && number <= 4 ? word = 'человека' : word = 'человек'
+        let phrase = `${number} ${word} тусанет с тобой сегодня`;
+        return phrase } else if (number === 0) {
           return 'Никто с тобой не тусанет'
         }
       };
   
       const reverseColorPhrase = () => {
         let reverseColor = '';
-        props.status.length > 0 ? reverseColor = 'primary' : reverseColor = 'danger'
+        length > 0 ? reverseColor = 'primary' : reverseColor = 'danger'
         return reverseColor;
       };
     return (
         <>
-        <h1 className={`badge fs-3 bg-${reverseColorPhrase()}`}>{renderPhrase(props.status)}</h1>
+        <h1 className={`badge fs-3 bg-${reverseColorPhrase()}`}>{renderPhrase(length)}</h1>
         </>
     )
 };

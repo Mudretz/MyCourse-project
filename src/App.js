@@ -13,7 +13,7 @@ function App() {
     };
   return (
   <>
-    <SearchStatus status={users}/>
+    <SearchStatus length={users.length}/>
     <table className="table">
     <thead>
       <tr>
