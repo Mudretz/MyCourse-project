@@ -1,26 +1,26 @@
 import React from "react";
 
-const SearchStatus = ( {length} ) => {
+const SearchStatus = ({ length }) => {
     const renderPhrase = (number) => {
-        if (number > 0) {
-        let word = ``;
-        number >= 2 && number <= 4 ? word = 'человека' : word = 'человек'
-        let phrase = `${number} ${word} тусанет с тобой сегодня`;
-        return phrase } else if (number === 0) {
-          return 'Никто с тобой не тусанет'
+        const lastOne = Number(number.toString().slice(-1));
+        if (number > 4 && number < 15) {
+            return "человек тусанет";
         }
-      };
-  
-      const reverseColorPhrase = () => {
-        let reverseColor = '';
-        length > 0 ? reverseColor = 'primary' : reverseColor = 'danger'
-        return reverseColor;
-      };
+        if (lastOne === 1) return "человек тусанет";
+        if ([2, 3, 4].indexOf(lastOne) >= 0) return "человека тусанут";
+        return "человек тусанет";
+    };
     return (
-        <>
-        <h1 className={`badge fs-3 bg-${reverseColorPhrase()}`}>{renderPhrase(length)}</h1>
-        </>
-    )
+        <h2>
+            <span
+                className={"badge " + (length > 0 ? "bg-primary" : "bg-danger")}
+            >
+                {length > 0
+                    ? `${length + " " + renderPhrase(length)}   с тобой сегодня`
+                    : "Никто с тобой не тусанет"}
+            </span>
+        </h2>
+    );
 };
 
 export default SearchStatus;
