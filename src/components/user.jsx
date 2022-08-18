@@ -21,7 +21,6 @@ const User = ({
                 {qualities.map((qual) => (
                     <Qualitie key={qual._id} {...qual} />
                 ))}
-                ;
             </td>
             <td>{profession.name}</td>
             <td>{completedMeetings}</td>
@@ -44,7 +43,6 @@ const User = ({
     );
 };
 
-export default User;
 User.propTypes = {
     _id: PropTypes.string,
     name: PropTypes.string.isRequired,
@@ -56,3 +54,5 @@ User.propTypes = {
     bookmark: PropTypes.bool.isRequired,
     onToggleBookMark: PropTypes.func.isRequired
 };
+
+export default User;
