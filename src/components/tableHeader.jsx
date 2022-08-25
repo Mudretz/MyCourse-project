@@ -31,7 +31,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                 {Object.keys(columns).map((column) => (
                     <th
                         key={column}
-                        onClick={
+                        onClick={ // Может лучше вынеси эту проверку в функцию handleSort
                             columns[column].path
                                 ? () => handleSort(columns[column].path)
                                 : undefined
