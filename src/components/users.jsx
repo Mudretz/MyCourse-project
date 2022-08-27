@@ -14,7 +14,8 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [users, setUsers] = useState();
-    const pageSize = 4;
+    const pageSize = 6;
+
     useEffect(() => {
         api.users
             .fetchAll()
@@ -24,9 +25,11 @@ const Users = () => {
                 )
             );
     }, []);
+
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
     };
+
     const handleToggleBookMark = (id) => {
         setUsers(
             users.map((user) => {
@@ -37,6 +40,7 @@ const Users = () => {
             })
         );
     };
+
     useEffect(() => {
         api.professions
             .fetchAll()
