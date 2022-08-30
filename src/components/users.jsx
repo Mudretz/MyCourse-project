@@ -61,21 +61,21 @@ const Users = () => {
     };
 
     if (users) {
+        const resultSearch = users.filter((user) => {
+            return user.name.toLowerCase().includes(value.toLowerCase());
+        });
+
         const filteredUsers = selectedProf
-            ? users.filter(
+            ? resultSearch.filter(
                 (user) =>
                     JSON.stringify(user.profession) ===
                     JSON.stringify(selectedProf)
             )
-            : users;
+            : resultSearch;
 
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
-
-        const resultSearch = userCrop.filter((user) => {
-            return user.name.toLowerCase().includes(value.toLowerCase());
-        });
 
         const clearFilter = () => {
             setSelectedProf(null);
@@ -107,17 +107,15 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <SearchUSers onSearch={searchValue} value={value}/>
                     {count > 0 && (
-                        <>
-                            <SearchUSers onSearch={searchValue} value={value}/>
-                            <UsersTable
-                                users={resultSearch}
-                                onSort={handleSort}
-                                selectedSort={sortBy}
-                                onDelete={handleDelete}
-                                onToggleBookMark={handleToggleBookMark}
-                            />
-                        </>
+                        <UsersTable
+                            users={userCrop}
+                            onSort={handleSort}
+                            selectedSort={sortBy}
+                            onDelete={handleDelete}
+                            onToggleBookMark={handleToggleBookMark}
+                        />
                     )}
                     <div className="d-flex jystify-content-center">
                         <Pagination
