@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const GroupList = ({ items, valueProperty, contentProperty, onItemSelect, selectedItem }) => {
+const GroupList = ({ items, valueProperty, contentProperty, onItemSelect, selectedItem, onClearSearch, value }) => {
     return (
         <ul className="list-group">
             {Object.keys(items).map((item) => (
@@ -9,9 +9,12 @@ const GroupList = ({ items, valueProperty, contentProperty, onItemSelect, select
                     key={items[item][valueProperty]}
                     className={
                         "list-group-item" +
-                        (items[item] === selectedItem ? " active" : "")
+                        (items[item] === selectedItem && !value ? " active" : "")
                     }
-                    onClick={() => onItemSelect(items[item])}
+                    onClick={() => {
+                        onItemSelect(items[item]);
+                        onClearSearch();
+                    }}
                     role="button"
                 >
                     {items[item][contentProperty]}
@@ -26,7 +29,9 @@ GroupList.propTypes = {
     valueProperty: PropTypes.string.isRequired,
     contentProperty: PropTypes.string.isRequired,
     onItemSelect: PropTypes.func,
-    selectedItem: PropTypes.object
+    selectedItem: PropTypes.object,
+    onClearSearch: PropTypes.func.isRequired,
+    value: PropTypes.string
 };
 
 GroupList.defaultProps = {

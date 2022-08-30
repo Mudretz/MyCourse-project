@@ -7,6 +7,7 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UsersTable from "./usersTable";
 import _ from "lodash";
+import SearchUSers from "./searchUsers";
 
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,6 +15,7 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState(null);
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [users, setUsers] = useState(null);
+    const [value, setValue] = useState("");
     const pageSize = 6;
 
     useEffect(() => {
@@ -54,6 +56,10 @@ const Users = () => {
         setSortBy(item);
     };
 
+    const searchValue = (item) => {
+        setValue(item.target.value);
+    };
+
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter(
@@ -67,8 +73,17 @@ const Users = () => {
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
+        const resultSearch = userCrop.filter((user) => {
+            return user.name.toLowerCase().includes(value.toLowerCase());
+        });
+
         const clearFilter = () => {
             setSelectedProf(null);
+            setValue("");
+        };
+
+        const clearSearch = () => {
+            setValue("");
         };
 
         return (
@@ -79,6 +94,8 @@ const Users = () => {
                             selectedItem={selectedProf}
                             items={professions}
                             onItemSelect={handleProfessionSelect}
+                            onClearSearch={clearSearch}
+                            value={value}
                         />
                         <button
                             className="btn btn-secondary mt-2"
@@ -91,13 +108,16 @@ const Users = () => {
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
                     {count > 0 && (
-                        <UsersTable
-                            users={userCrop}
-                            onSort={handleSort}
-                            selectedSort={sortBy}
-                            onDelete={handleDelete}
-                            onToggleBookMark={handleToggleBookMark}
-                        />
+                        <>
+                            <SearchUSers onSearch={searchValue} value={value}/>
+                            <UsersTable
+                                users={resultSearch}
+                                onSort={handleSort}
+                                selectedSort={sortBy}
+                                onDelete={handleDelete}
+                                onToggleBookMark={handleToggleBookMark}
+                            />
+                        </>
                     )}
                     <div className="d-flex jystify-content-center">
                         <Pagination
