@@ -58,7 +58,8 @@ const Users = () => {
         const filteredUsers = selectedProf
             ? users.filter(
                 (user) =>
-                    user.profession.id === selectedProf.id
+                    JSON.stringify(user.profession) ===
+                    JSON.stringify(selectedProf)
             )
             : users;
 
