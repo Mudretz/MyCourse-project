@@ -21,7 +21,6 @@ const User = ({
                 {qualities.map((qual) => (
                     <Qualitie key={qual._id} {...qual} />
                 ))}
-                ;
             </td>
             <td>{profession.name}</td>
             <td>{completedMeetings}</td>
@@ -48,7 +47,7 @@ User.propTypes = {
     _id: PropTypes.string,
     name: PropTypes.string.isRequired,
     qualities: PropTypes.array.isRequired,
-    profession: PropTypes.object.isRequired,
+    profession: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     completedMeetings: PropTypes.number.isRequired,
     rate: PropTypes.number.isRequired,
     onDelete: PropTypes.func.isRequired,
