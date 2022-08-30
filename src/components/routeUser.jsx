@@ -34,11 +34,13 @@ const RouteUser = ({ id }) => {
                         />
                     ))}
                 </h3>
+                <h4>completedMeetings: {idUser.completedMeetings}</h4>
+                <h5>Rate: {idUser.rate}</h5>
                 <button onClick={() => {
                     handleSave();
                 }}
                 >
-                    Сохранить
+                    Все пользователи
                 </button>
             </>
         );
