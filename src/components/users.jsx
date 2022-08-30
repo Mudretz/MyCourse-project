@@ -10,23 +10,28 @@ import _ from "lodash";
 
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfessions] = useState();
-    const [selectedProf, setSelectedProf] = useState();
+    const [professions, setProfessions] = useState([]);
+    const [selectedProf, setSelectedProf] = useState(null);
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState(null);
+    
     const pageSize = 4;
+    
     useEffect(() => {
-        api.users
-            .fetchAll()
-            .then((data) =>
-                setUsers(
-                    data
-                )
-            );
+        api.users.fetchAll()
+            .then((data) => setUsers(data));
+        api.professions.fetchAll()
+            .then((data) => setProfessions(data));
     }, []);
+    
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedProf]);
+    
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
     };
+    
     const handleToggleBookMark = (id) => {
         setUsers(
             users.map((user) => {
@@ -37,19 +42,6 @@ const Users = () => {
             })
         );
     };
-    useEffect(() => {
-        api.professions
-            .fetchAll()
-            .then((data) =>
-                setProfessions(
-                    data
-                )
-            );
-    }, []);
-
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [selectedProf]);
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
@@ -67,8 +59,7 @@ const Users = () => {
         const filteredUsers = selectedProf
             ? users.filter(
                 (user) =>
-                    JSON.stringify(user.profession) ===
-                    JSON.stringify(selectedProf)
+                    user.profession.id === selectedProf.id // _id - не знаю как там у тебя 
             )
             : users;
 
@@ -77,7 +68,7 @@ const Users = () => {
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
         const clearFilter = () => {
-            setSelectedProf();
+            setSelectedProf(null);
         };
 
         return (
