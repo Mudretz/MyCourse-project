@@ -14,24 +14,23 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState(null);
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [users, setUsers] = useState(null);
-    
-    const pageSize = 4;
-    
+    const pageSize = 6;
+
     useEffect(() => {
         api.users.fetchAll()
             .then((data) => setUsers(data));
         api.professions.fetchAll()
             .then((data) => setProfessions(data));
     }, []);
-    
+
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
-    
+
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
     };
-    
+
     const handleToggleBookMark = (id) => {
         setUsers(
             users.map((user) => {
@@ -59,7 +58,7 @@ const Users = () => {
         const filteredUsers = selectedProf
             ? users.filter(
                 (user) =>
-                    user.profession.id === selectedProf.id // _id - не знаю как там у тебя 
+                    user.profession.id === selectedProf.id
             )
             : users;
 
