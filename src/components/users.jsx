@@ -7,6 +7,7 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UsersTable from "./usersTable";
 import _ from "lodash";
+import SearchUSers from "./searchUsers";
 
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,6 +15,7 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState(null);
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [users, setUsers] = useState(null);
+    const [value, setValue] = useState("");
     const pageSize = 6;
 
     useEffect(() => {
@@ -54,14 +56,22 @@ const Users = () => {
         setSortBy(item);
     };
 
+    const searchValue = (item) => {
+        setValue(item.target.value);
+    };
+
     if (users) {
+        const resultSearch = users.filter((user) => {
+            return user.name.toLowerCase().includes(value.toLowerCase());
+        });
+
         const filteredUsers = selectedProf
-            ? users.filter(
+            ? resultSearch.filter(
                 (user) =>
                     JSON.stringify(user.profession) ===
                     JSON.stringify(selectedProf)
             )
-            : users;
+            : resultSearch;
 
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
@@ -69,6 +79,11 @@ const Users = () => {
 
         const clearFilter = () => {
             setSelectedProf(null);
+            setValue("");
+        };
+
+        const clearSearch = () => {
+            setValue("");
         };
 
         return (
@@ -79,6 +94,8 @@ const Users = () => {
                             selectedItem={selectedProf}
                             items={professions}
                             onItemSelect={handleProfessionSelect}
+                            onClearSearch={clearSearch}
+                            value={value}
                         />
                         <button
                             className="btn btn-secondary mt-2"
@@ -90,6 +107,7 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <SearchUSers onSearch={searchValue} value={value}/>
                     {count > 0 && (
                         <UsersTable
                             users={userCrop}
