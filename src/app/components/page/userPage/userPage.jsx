@@ -2,18 +2,15 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import api from "../../../api";
 import Qualities from "../../ui/qualities";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import EditUser from "../editUserPage/editUser";
 
-const UserPage = ({ userId }) => {
-    const history = useHistory();
+const UserPage = ({ userId, edit }) => {
     const [user, setUser] = useState();
     useEffect(() => {
         api.users.getById(userId).then((data) => setUser(data));
-    }, []);
-    const handleClick = () => {
-        history.push("/users");
-    };
-    if (user) {
+    }, [user]);
+    if (user && !edit) {
         return (
             <div>
                 <h1> {user.name}</h1>
@@ -21,7 +18,19 @@ const UserPage = ({ userId }) => {
                 <Qualities qualities={user.qualities} />
                 <p>completedMeetings: {user.completedMeetings}</p>
                 <h2>Rate: {user.rate}</h2>
-                <button onClick={handleClick}> Все Пользователи</button>
+                <Link to={`/users/${user._id}/edit`}>
+                    <button>Изменить</button>
+                </Link>
+            </div>
+        );
+    } else if (edit && user) {
+        return (
+            <div className="container mt-5">
+                <div className="row">
+                    <div className="col-md-6 offset-md-3 shadow p-4">
+                        <EditUser user={user}/>
+                    </div>
+                </div>
             </div>
         );
     } else {
@@ -30,7 +39,8 @@ const UserPage = ({ userId }) => {
 };
 
 UserPage.propTypes = {
-    userId: PropTypes.string.isRequired
+    userId: PropTypes.string.isRequired,
+    edit: PropTypes.string
 };
 
 export default UserPage;
