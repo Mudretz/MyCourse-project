@@ -7,23 +7,19 @@ import GroupList from "../../common/groupList";
 import SearchStatus from "../../ui/searchStatus";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
-import SearchUSers from "./searchUsers";
-
+import { useUser } from "../../../hooks/useUsers";
 const UsersListPage = () => {
+    const { users } = useUser();
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-<<<<<<< HEAD:src/app/components/page/usersListPage/usersListPage.jsx
     const pageSize = 8;
 
-    const [users, setUsers] = useState();
-    useEffect(() => {
-        api.users.fetchAll().then((data) => setUsers(data));
-    }, []);
     const handleDelete = (userId) => {
-        setUsers(users.filter((user) => user._id !== userId));
+        // setUsers(users.filter((user) => user._id !== userId));
+        console.log(userId);
     };
     const handleToggleBookMark = (id) => {
         const newArray = users.map((user) => {
@@ -32,13 +28,9 @@ const UsersListPage = () => {
             }
             return user;
         });
-        setUsers(newArray);
+        // setUsers(newArray);
+        console.log(newArray);
     };
-=======
-    const [users, setUsers] = useState(null);
-    const [value, setValue] = useState("");
-    const pageSize = 6;
->>>>>>> d0f40516d7e641a0336fa03822ae31ce9f098867:src/components/users.jsx
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
@@ -64,38 +56,21 @@ const UsersListPage = () => {
         setSortBy(item);
     };
 
-    const searchValue = (item) => {
-        setValue(item.target.value);
-    };
-
     if (users) {
-<<<<<<< HEAD:src/app/components/page/usersListPage/usersListPage.jsx
         const filteredUsers = searchQuery
             ? users.filter(
-=======
-        const resultSearch = users.filter((user) => {
-            return user.name.toLowerCase().includes(value.toLowerCase());
-        });
-
-        const filteredUsers = selectedProf
-            ? resultSearch.filter(
->>>>>>> d0f40516d7e641a0336fa03822ae31ce9f098867:src/components/users.jsx
-                (user) =>
-                    user.name
-                        .toLowerCase()
-                        .indexOf(searchQuery.toLowerCase()) !== -1
-            )
-<<<<<<< HEAD:src/app/components/page/usersListPage/usersListPage.jsx
+                  (user) =>
+                      user.name
+                          .toLowerCase()
+                          .indexOf(searchQuery.toLowerCase()) !== -1
+              )
             : selectedProf
-                ? users.filter(
-                    (user) =>
-                        JSON.stringify(user.profession) ===
-                        JSON.stringify(selectedProf)
-                )
-                : users;
-=======
-            : resultSearch;
->>>>>>> d0f40516d7e641a0336fa03822ae31ce9f098867:src/components/users.jsx
+            ? users.filter(
+                  (user) =>
+                      JSON.stringify(user.profession) ===
+                      JSON.stringify(selectedProf)
+              )
+            : users;
 
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
@@ -105,16 +80,7 @@ const UsersListPage = () => {
         );
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
-<<<<<<< HEAD:src/app/components/page/usersListPage/usersListPage.jsx
             setSelectedProf();
-=======
-            setSelectedProf(null);
-            setValue("");
-        };
-
-        const clearSearch = () => {
-            setValue("");
->>>>>>> d0f40516d7e641a0336fa03822ae31ce9f098867:src/components/users.jsx
         };
 
         return (
@@ -125,8 +91,6 @@ const UsersListPage = () => {
                             selectedItem={selectedProf}
                             items={professions}
                             onItemSelect={handleProfessionSelect}
-                            onClearSearch={clearSearch}
-                            value={value}
                         />
                         <button
                             className="btn btn-secondary mt-2"
@@ -139,7 +103,6 @@ const UsersListPage = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
-<<<<<<< HEAD:src/app/components/page/usersListPage/usersListPage.jsx
                     <input
                         type="text"
                         name="searchQuery"
@@ -147,9 +110,6 @@ const UsersListPage = () => {
                         onChange={handleSearchQuery}
                         value={searchQuery}
                     />
-=======
-                    <SearchUSers onSearch={searchValue} value={value}/>
->>>>>>> d0f40516d7e641a0336fa03822ae31ce9f098867:src/components/users.jsx
                     {count > 0 && (
                         <UserTable
                             users={usersCrop}
