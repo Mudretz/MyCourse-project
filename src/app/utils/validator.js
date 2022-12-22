@@ -3,20 +3,9 @@ export function validator(data, config) {
     function validate(validateMethod, data, config) {
         let statusValidate;
         switch (validateMethod) {
-<<<<<<< HEAD:src/app/utils/validator.js
-        case "isRequired": {
-            if (typeof data === "boolean") {
-                statusValidate = !data;
-            } else {
-                statusValidate = data.trim() === "";
-            }
-            break;
-        }
-=======
         case "isRequired":
             statusValidate = data.trim() === "";
             break;
->>>>>>> d0f40516d7e641a0336fa03822ae31ce9f098867:src/utils/validator.js
         case "isEmail": {
             const emailRegExp = /^\S+@\S+\.\S+$/g;
             statusValidate = !emailRegExp.test(data);
